@@ -1,131 +1,76 @@
 # KTH-IK1203
 Network and Communication
 
-# HTTP Concurrent Server Project
+# TCP & HTTP Server Project
 
-## Overview
-This project involves building a simple yet functional concurrent web server in Java, using TCP sockets and multithreading. The project is divided into four tasks:
-1. Implementing a basic TCP client (`TCPClient`).
-2. Developing a command-line TCP client application (`TCPAsk`).
-3. Creating an HTTP-based TCP server (`HTTPAsk`).
-4. Extending `HTTPAsk` into a concurrent server (`ConcHTTPAsk`).
+## Project Overview
+This project involves building a series of networked applications in Java, progressively increasing in complexity. It consists of four tasks, starting from a basic TCP client to a concurrent HTTP server. The goal is to understand socket programming, HTTP request parsing, and concurrency using Java threads.
 
-Through this project, key concepts such as socket programming, HTTP request handling, and Java multithreading are explored.
+## Tasks Breakdown
 
----
+### Task 1: TCP Client (`TCPClient`)
+**Objective:**
+- Implement a TCP client in Java that can connect to a server, send requests, and receive responses.
 
-## Task 1: TCP Client (`TCPClient`)
-### Objective
-Implement a TCP client that connects to a given hostname and port, sends an optional data string, and retrieves the server's response.
+**What I Learned:**
+- How to establish a TCP connection using Java’s `Socket` class.
+- Sending and receiving data using byte streams (`InputStream` and `OutputStream`).
+- Handling explicit encoding and decoding of data without using wrapper classes.
 
-### Key Features
-- Establishes a TCP connection to a server.
-- Sends an optional data string to the server.
-- Reads and returns the response from the server.
-- Uses raw byte streams (no wrappers like `BufferedReader`).
+### Task 2: TCP Command-Line Application (`TCPAsk`)
+**Objective:**
+- Build a command-line tool that interacts with `TCPClient`, allowing users to specify parameters (hostname, port, message, etc.).
 
-### Usage
-```java
-TCPClient client = new TCPClient(false, 5000, 1000);
-byte[] response = client.askServer("time.nist.gov", 13, "");
-```
+**What I Learned:**
+- Parsing command-line arguments in Java.
+- Handling optional parameters such as timeout and limit.
+- Designing a simple CLI application to interact with network services.
 
----
+### Task 3: HTTP Server (`HTTPAsk`)
+**Objective:**
+- Implement a single-threaded HTTP server that receives HTTP GET requests, extracts query parameters, and forwards them to `TCPClient`.
 
-## Task 2: Command-Line TCP Client (`TCPAsk`)
-### Objective
-Create a command-line application that takes user input, connects to a specified server using `TCPClient`, and prints the response.
+**What I Learned:**
+- How to create a basic HTTP server using Java’s `ServerSocket`.
+- Parsing HTTP GET requests and extracting query parameters.
+- Constructing and sending valid HTTP responses with correct headers.
+- Handling HTTP request persistence and detecting the end of requests.
 
-### Key Features
-- Parses command-line arguments for hostname, port, and optional data string.
-- Calls `TCPClient.askServer()` to communicate with the server.
-- Prints the server response to standard output.
+### Task 4: Concurrent HTTP Server (`ConcHTTPAsk`)
+**Objective:**
+- Modify `HTTPAsk` to handle multiple clients concurrently using Java threads.
 
-### Usage
-```sh
-java TCPAsk time.nist.gov 13
-```
+**What I Learned:**
+- Creating and managing threads in Java.
+- Implementing the `Runnable` interface to handle client connections concurrently.
+- Improving server efficiency by allowing multiple clients to be served simultaneously.
 
----
+## Summary
+This project provided hands-on experience with Java networking, covering TCP clients, HTTP servers, and concurrency. It demonstrated the fundamental concepts of socket communication, HTTP request handling, and multi-threading in Java, laying the groundwork for building scalable network applications.
 
-## Task 3: HTTP-Based TCP Server (`HTTPAsk`)
-### Objective
-Develop an HTTP server that listens for HTTP requests, extracts query parameters, and uses `TCPClient` to send and receive data from remote servers.
+## Usage
+To run any part of this project, use the following commands:
 
-### Key Features
-- Parses HTTP GET requests.
-- Extracts query parameters (`hostname`, `port`, `data`, `limit`, etc.).
-- Calls `TCPClient.askServer()` with the extracted parameters.
-- Returns an HTTP response with the server's reply.
+1. **Start TCPAsk:**
+   ```sh
+   java TCPAsk <hostname> <port> [optional parameters]
+   ```
 
-### Example HTTP Request
-```
-GET /ask?hostname=time.nist.gov&port=13 HTTP/1.1
-```
+2. **Start HTTPAsk Server:**
+   ```sh
+   java HTTPAsk <port>
+   ```
 
-### Example HTTP Response
-```
-HTTP/1.1 200 OK
-Content-Type: text/plain
-
-[server response]
-```
-
-### Usage
-```sh
-java HTTPAsk 8888
-```
-Then, open a browser and visit:
-```
-http://localhost:8888/ask?hostname=time.nist.gov&port=13
-```
-
----
-
-## Task 4: Concurrent HTTP Server (`ConcHTTPAsk`)
-### Objective
-Enhance `HTTPAsk` to handle multiple client requests simultaneously using Java threads.
-
-### Key Features
-- Uses `ServerSocket` to listen for connections.
-- Spawns a new thread for each client request.
-- Each thread handles a single HTTP request independently.
-- Supports concurrent HTTP request processing.
-
-### Usage
-```sh
-java ConcHTTPAsk 8888
-```
-
-### How It Works
-- When a client connects, a new thread is created to handle the request.
-- The thread processes the request and sends the response while the main server continues listening for new connections.
-- This improves performance and allows multiple clients to interact with the server at the same time.
-
----
+3. **Start Concurrent HTTPAsk Server:**
+   ```sh
+   java ConcHTTPAsk <port>
+   ```
 
 ## Technologies Used
-- Java (Sockets, Multithreading, HTTP Parsing)
-- TCP/IP Protocol
+- Java
+- Sockets (TCP/IP)
 - HTTP Protocol
-
----
-
-## How to Run the Project
-1. Compile the Java files:
-   ```sh
-   javac *.java
-   ```
-2. Run the concurrent HTTP server:
-   ```sh
-   java ConcHTTPAsk 8888
-   ```
-3. Send a request using a browser or command-line tool:
-   ```sh
-   curl "http://localhost:8888/ask?hostname=time.nist.gov&port=13"
-   ```
-
----
+- Multithreading (Java Threads)
 
 ## Author
 [Your Name]
