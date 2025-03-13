@@ -72,9 +72,5 @@ To run any part of this project, use the following commands:
 - HTTP Protocol
 - Multithreading (Java Threads)
 
-## Author
-[Your Name]
 
-## License
-This project is open-source and available under the MIT License.
 
